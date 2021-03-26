@@ -1,19 +1,18 @@
 const server = require('express').Router();
-const post = require('../controllers/post.js');
+const post = require('../controllers/Post.js');
 
 server.get('/', (req, res, next) =>{
     post.read()
-    .then(r=> res.send(r))
+    .then(r => res.send(r))
     .catch(next);
 })
 
 server.post('/', (req, res,next)=>{
     const { title, content, img, category} = req.body
-    console.log(req.body)
     if(!title || !content  || !img || !category){
         return res.status(400).send('Body must have a title, content and description')
     }
-    post.create(req.body)
+    post.create(req.body, res)
     .then(r => res.send(r))
     .catch(next);
 })

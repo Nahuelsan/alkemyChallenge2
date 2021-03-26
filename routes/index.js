@@ -1,9 +1,8 @@
 const router = require('express').Router();
 
-const post = require('./operation.js');
-app.get('/', (req, res) => res.status(200).send ({
-    message: 'Example project did not give you access to the api web services',
-}));
+const post = require('./post.js');
+
 router.use('/post', post);
+
 
 module.exports = router;

@@ -1,21 +1,27 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-
+const express       = require('express');
+const morgan        = require('morgan');
+const bodyParser    = require('body-parser');
+const sequelize     = require('./db.js');
+const routes = require('./routes');
 const app = express();
 
-// parse requests of content-type - application/json
+app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// Setup a default catch-all route that sends back a welcome message in JSON format.
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+     res.setHeader('Access-Control-Allow-Origin', '*');
+     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+     next();
+ });
+ app.use('/', routes);
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+sequelize.sync().then(reslut => {
+     app.listen(8080); 
+ })
+ .catch(error => {
+     console.log(error);   
+ });
+module.exports = app;

@@ -1,23 +1,24 @@
-const { Post } = require('../db.js');
+const sequelize     = require('sequelize');
+const post       = require('../models/').post;
 
 module.exports = {
     read: function(){
-        return Post.findAll({
-            attributes: ['id', 'content', 'img', 'category', 'title'],
-            order: ['category']
-        })
+        return post
+            .findAll({
+                attributes: ['id', 'content', 'img', 'category', 'title'],
+            })
     },
 
-    create : function({content, img, category, title}){
-        return Post.findOrCreate({
-            where: {
-                title: title,
-                content: content,
-                img : img,
-                category : category.split('-').reverse().join('-')
-            }
+    create: function({content, img, category, title}, res){
+        return post
+        .create({
+            title: title,
+            content: content,
+            img : img,
+            category : category
         })
         .then(() => this.read())
+        .catch(error => res.status(400).send(error))
     },
     update: function(id, {content, img, category, title}) {
         let atributesToUpdate= {};
@@ -25,7 +26,7 @@ module.exports = {
         if (img) atributesToUpdate.img = img;
         if (category) atributesToUpdate.category = category;
         atributesToUpdate.title = title;
-        const postPromise = Post.upcategory(
+        const postPromise = post.update(
             atributesToUpdate,
             { 
                 where: { 
@@ -33,13 +34,13 @@ module.exports = {
                 }
             }
         )
-        .then(() => Post.findByPk(id))
+        .then(() => post.findByPk(id))
         return postPromise
         .then(() => this.read())
     },
 
     delete: function(id) {
-        return Post.destroy({
+        return post.destroy({
             where: {
                 id
             }

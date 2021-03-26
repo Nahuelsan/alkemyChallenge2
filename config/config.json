@@ -1,10 +1,11 @@
 {
   "development": {
-    "username": "root",
+    "username": "NSM",
     "password": "7h1eczmu",
     "database": "alkemyChallenge",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "operatorAliases" : false
   },
   "test": {
     "username": "root",
@@ -15,7 +16,7 @@
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "7h1eczmu",
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"

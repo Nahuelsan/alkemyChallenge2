@@ -1,20 +1,30 @@
 const express       = require('express');
-const logger        = require('morgan');
+const morgan        = require('morgan');
 const bodyParser    = require('body-parser');
-const http = require('http');
-// Set up the express app
+const sequelize     = require('sequelize');
+
+
 const app = express();
-// Log requests to the console.
-app.use(logger('dev'));
-// Parse incoming requests data (https://github.com/expressjs/body-parser)
+
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // Setup a default catch-all route that sends back a welcome message in JSON format.
-app.get('*', (req, res) => res.status(200).send({
-     message: 'Welcome to the beginning of nothingness.',
-}));
-const port = parseInt(process.env.PORT, 10) || 8000;
-app.set('port', port);
-const server = http.createServer(app);
-server.listen(port);
+
+app.use((req, res, next) => {
+     res.setHeader('Access-Control-Allow-Origin', '*');
+     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+     next();
+ });
+ 
+
+sequelize.sync().then(reslut => {
+     console.log(reslut);
+     app.listen(8080); 
+ 
+ })
+ .catch(error => {
+     console.log(error);   
+ });
 module.exports = app;
