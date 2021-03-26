@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('alkemyChallenge','NSM','7h1eczmu', { 
+const sequelize = new Sequelize('alkemyChallenge','root','toor', { 
     operatorsAliases: false ,
     dialect: 'mysql',
     host:'localhost'
