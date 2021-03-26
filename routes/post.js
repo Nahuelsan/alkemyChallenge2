@@ -4,7 +4,7 @@ const post = require('../controllers/Post.js');
 server.get('/', (req, res, next) =>{
     post.read()
     .then(r => res.send(r))
-    .catch(next);
+    .catch(next('err'));
 })
 
 server.post('/', (req, res,next)=>{
@@ -14,11 +14,9 @@ server.post('/', (req, res,next)=>{
     }
     post.create(req.body, res)
     .then(r => res.send(r))
-    .catch(next);
+    .catch(next('err'));
 })
 server.patch('/:id', (req, res,next)=>{
-    console.log(req.body)
-    console.log(req.params)
     const { id } = req.params
     const { title, content, img} = req.body
     if(!title || !content  || !img ){
@@ -26,18 +24,17 @@ server.patch('/:id', (req, res,next)=>{
     }
     post.update(id, req.body)
     .then(r => res.send(r))
-    .catch(next);
+    .catch(next('err'));
 })
 
 server.delete('/:id', (req, res, next) => {
     const { id } = req.params;
-    console.log(id)
     if (!id ) {
         return res.status(400).send('An id is needed to delete the product')
     }
     post.delete(id)
 	.then(r => res.send(r))
-	.catch(next);
+	.catch(next('err'));
 });
 
 module.exports = server;
