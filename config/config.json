@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "NSM",
-    "password": "7h1eczmu",
+    "username": "root",
+    "password": "toor",
     "database": "alkemyChallenge",
     "host": "127.0.0.1",
     "dialect": "mysql",
